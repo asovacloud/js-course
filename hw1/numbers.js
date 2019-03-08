@@ -1,4 +1,4 @@
-var pi = 3.141592653589793238462643;
+let pi = 3.141592653589793238462643;
 
 // 1. A number of PI round up to 2 decimal places
 console.log('1. Round up to 2 decimal places - ', pi.toFixed(2) );

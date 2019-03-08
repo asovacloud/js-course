@@ -1,4 +1,4 @@
-var string = 'some test string';
+let string = 'some test string';
 
 // 1. Take first and last letters from the string.
 const FIRST_LETTER = string.charAt(0);
