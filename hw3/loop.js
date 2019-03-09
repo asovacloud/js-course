@@ -32,11 +32,11 @@ console.log(`New sting: ${stringNew1}`);
 let number = 10;
 let factorial = 1;
 
-for (; number; number--) {
-    factorial *= number;
+for (var i = number; i; i--) {
+    factorial *= i;
 }
 
-console.log(`Factorial of number: ${factorial} `);
+console.log(`Factorial of a number of ${number} is: ${factorial} `);
 
 // 4. Create new String without space
 let string3 = 'JavaScript is a pretty good language';
