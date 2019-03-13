@@ -95,4 +95,22 @@ function changeCollection( ...array ) {
 
 console.log( changeCollection([1,2,3], ['a','b','c'], [10,23,234,'sdf',]) );
 
-//8. Remove first element from each Array
+//8. Check keys on the Object, and show right Objects
+let users = [
+    {name: 'Denis', age: '29', gender: 'male'} ,
+    {name: 'Sveta', age: '32', gender: 'female'},
+    {name: 'Ivan', age: '26', gender: 'male'},
+    {name: 'Sofia', age: '2', gender: 'female'}
+];
+
+function funcGetUsers( usersObj, key, value ) {
+    let newArray = [];
+    for (var name in usersObj) {
+        if (usersObj[name].hasOwnProperty( key ) && usersObj[name][key] == value ) {
+            newArray[newArray.length] = usersObj[name];
+        }
+    }
+    return newArray;
+}
+
+console.log( funcGetUsers(users, 'gender', 'male') );
