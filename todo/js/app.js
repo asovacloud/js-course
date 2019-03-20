@@ -57,7 +57,7 @@ const delete_todo_item = (id) => {
         return null;
     }
 
-    console.log( fix_id( storage.current_todos ) );
+    fix_id(storage.current_todos);
 
     return storage.current_todos;
 
