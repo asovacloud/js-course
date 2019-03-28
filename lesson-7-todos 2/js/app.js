@@ -110,7 +110,8 @@
      * @param {*} text 
      */
     function editTaskStorage(id, title, text) {
-
+        deleteTodoFromStorage(id);
+        addNewTodoToStorage(title, text);
     }
 
 })();
