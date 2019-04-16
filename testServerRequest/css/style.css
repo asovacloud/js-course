@@ -1,0 +1,127 @@
+body {
+    font: 16px/1.6 "Trebuchet MS", Helvetica, sans-serif;
+    color: gray;
+}
+
+a {
+    color: #ef3e42;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ff5959;
+    text-decoration: underline;
+}
+
+*, ::after, ::before {
+    box-sizing: inherit;
+}
+
+.search-box input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: pink;
+}
+.search-box input::-moz-placeholder { /* Firefox 19+ */
+    color: pink;
+}
+.search-box input:-ms-input-placeholder { /* IE 10+ */
+    color: pink;
+}
+.search-box input:-moz-placeholder { /* Firefox 18- */
+    color: pink;
+}
+
+.search-box {
+    margin: 0 auto 30px;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    display: flex;
+}
+
+.search-box .holder {
+    width: 99%;
+}
+
+.search-box .holder input {
+    width: calc(100% - 30px);
+    display: block;
+    height: 40px;
+    padding: 0 15px;
+    font: 18px/40px Arial, Helvetica, sans-serif;
+    color: black;
+    border: 0;
+}
+
+.search-box button {
+    height: 40px;
+    padding: 0 15px;
+    margin: 0;
+    font: 18px/40px Arial, Helvetica, sans-serif;
+    color: white;
+    background: #ef3e42;
+    border: none;
+    border-radius: 0;
+    transition: background .3s cubic-bezier(.694,0,.335,1);
+    cursor: pointer;
+}
+
+.search-box button:hover {
+    background: #ff5959;
+}
+
+#content {
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+#content .item {
+    padding: 30px 15px;
+    border-bottom: 1px solid #ccc;
+    overflow: hidden;
+}
+
+#content .item:first-child {
+    border-top: 1px solid #ccc;
+}
+
+#content h1 {
+    font-size: 22px;
+    line-height: 1.3;
+    margin: 0 0 5px;
+    color: black;
+}
+
+#content dl {
+    margin: 0 0 20px;
+    padding: 0;
+    list-style: none;
+    display: flex;
+}
+
+#content dl dt {
+    font-weight: bold;
+    font-size: 12px;
+    margin: auto 0 0;
+    color: black;
+}
+
+#content dl dd {
+    margin: 0 0 0 10px;
+}
+
+#content .photo {
+    margin: 0 15px 20px 0;
+    width: 100px;
+    float: left;
+}
+
+#content .photo img {
+    display: block;
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+}
+
+#content .description {
+    clear: both;
+    margin: 0 0 10px;
+}
