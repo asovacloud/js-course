@@ -43,8 +43,6 @@ const showArticles = function ( articles ) {
         divItem.appendChild(divMore);
 
         contentBox.appendChild(divItem);
-
-        console.log( articles[i] );
     }
     content.insertAdjacentElement('afterbegin', contentBox );
 }
