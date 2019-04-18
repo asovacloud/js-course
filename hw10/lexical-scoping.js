@@ -89,8 +89,8 @@ const Calculator = (function () {
     let number = 0;
 
     const checkNumber = function(value) {
-        if (parseInt(value) !== NaN) {
-            return value;
+        if (value !== undefined) {
+            return parseInt(value);
         } else {
             return 0;
         }
