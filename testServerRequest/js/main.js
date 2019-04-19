@@ -56,12 +56,21 @@ searchBox.addEventListener('click', function (e) {
     if(elementTag !== 'BUTTON') {return null}
 
     const inputEl = element.closest('.search-box').querySelector( '.search-box__text' );
-    const inputText = inputEl.value;
 
-    const callback = function (resonse, sendText) {
-        showArticles( resonse.articles );
-    };
+    const countryValue = element.closest('.search-box').querySelector( '#country option:checked' ).value;
 
-    request.sendText( data, callback, inputText );
+    const categoryValue = element.closest('.search-box').querySelector( '#category option:checked' ).value;
+
+    data.inputText = inputEl.value;
+    data.countryValue = countryValue;
+    data.categoryValue = categoryValue;
+
+    request.sendText( data )
+        .then(
+            response => {
+                showArticles( response.articles );
+            },
+            error => console.log(`Rejected: ${error}`)
+        );
 
 });

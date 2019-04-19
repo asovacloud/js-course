@@ -33,8 +33,32 @@ a:hover {
 .search-box {
     margin: 0 auto 30px;
     max-width: 400px;
-    border: 1px solid #ccc;
+}
+
+.search-box .row-search {
     display: flex;
+    border: 1px solid #ccc;
+    margin: 0 0 15px;
+}
+
+.search-box .row {
+    overflow: hidden;
+    margin: 0 0 10px;
+}
+
+.search-box label {
+    display: inline-block;
+    vertical-align: middle;
+    width: 20%;
+    color: black;
+    font-size: 12px;
+}
+
+.search-box select {
+    width: 75%;
+    float: right;
+    vertical-align: middle;
+    margin: 0 0 0 auto;
 }
 
 .search-box .holder {

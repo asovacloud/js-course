@@ -1,21 +1,37 @@
 class XHRrequest {
 
-    sendText = function ( data, callback, inputText ) {
-        let url = data.url || null;
-        const method = data.method || 'get';
-        const key = data.headerKey || null;
+    sendText = function ( data ) {
 
-        if(inputText) { url = `${url}?q=${inputText}` }
+        return new Promise(function(resolve, reject) {
 
-        console.log(url);
+            let url = data.url || null;
+            const method = data.method || 'get';
+            const key = data.headerKey || null;
 
-        const xhr = new XMLHttpRequest();
-        xhr.open(method, url, true);
-        if (key) { xhr.setRequestHeader("X-Api-Key", key) }
+            if(data.inputText) { url = `${url}?country=${data.countryValue}&category=${data.categoryValue}&q=${data.inputText}` }
 
-        xhr.send();
+            const xhr = new XMLHttpRequest();
+            xhr.open(method, url, true);
+            if (key) { xhr.setRequestHeader("X-Api-Key", key) }
 
-        xhr.addEventListener('load', (inputText) => callback( JSON.parse(xhr.responseText) ) );
+            xhr.onload = function() {
+                if (this.status == 200) {
+                    resolve( JSON.parse(xhr.responseText) );
+                } else {
+                    var error = new Error(this.statusText);
+                    error.code = this.status;
+                    reject(error);
+                }
+            };
+
+            xhr.onerror = function() {
+                reject(new Error("Network Error"));
+            };
+
+            xhr.send();
+
+
+        });
 
     }
 
@@ -29,5 +45,3 @@ const data = {
 
 
 const request = new XHRrequest();
-
-//request.sendText( data, callback );

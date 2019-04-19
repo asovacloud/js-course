@@ -11,10 +11,27 @@
     <body>
 
         <form class="search-box" method="get">
-            <div class="holder">
-                <input type="text" class="search-box__text" placeholder="Enter text">
+            <div class="row-search">
+                <div class="holder">
+                    <input type="text" class="search-box__text" placeholder="Enter text">
+                </div>
+                <button class="search-box__btn">Search</button>
             </div>
-            <button class="search-box__btn">Search</button>
+            <div class="row">
+                <label for="country">Country:</label>
+                <select id="country">
+                    <option value="us">USA</option>
+                    <option value="en">English</option>
+                    <option value="ru">Russian</option>
+                </select>
+            </div>
+            <div class="row">
+                <label for="category">Category:</label>
+                <select id="category">
+                    <option value="sports">Sport</option>
+                    <option value="business">Business</option>
+                </select>
+            </div>
         </form>
 
         <div id="content"></div>
