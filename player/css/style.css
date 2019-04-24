@@ -1,0 +1,167 @@
+html,
+body {
+	height: 100%;
+}
+body {
+	display: flex;
+}
+
+/* buttons */
+.btn {
+	display: flex;
+	width: 25px;
+	min-width: 25px;
+	height: 25px;
+	border: none;
+	margin: 0;
+	padding: 0;
+	background: #ef3e42;
+	color: white;
+	transition: background .3s;
+	cursor: pointer;
+	font-size: 12px;
+	position: relative;
+}
+button {
+	outline: none;
+}
+.btn:hover {
+	background: #ff5959;
+}
+.btn i {
+	padding: 0 0 1px 0;
+	margin: auto;
+}
+.dynamic-ico .first {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+.dynamic-ico i {
+	transition: opacity .6s;
+}
+.dynamic-ico .first {
+	opacity: 0;
+}
+.dynamic-ico.active .first {
+	opacity: 1;
+}
+.dynamic-ico.active .second {
+	opacity: 0;
+}
+
+/* video box */
+.video-box {
+	width: 400px;
+	margin: auto;
+}
+.video-box__holder {
+	position: relative;
+}
+.video-box__holder video {
+	position: relative;
+}
+.video-box .holder-play {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	cursor: pointer;
+	display: flex;
+	color: white;
+	font-size: 60px;
+	line-height: 1;
+}
+.video-box .holder-play i {
+	transition: opacity .3s;
+	margin: auto;
+	opacity: 1;
+}
+.video-box .holder-play.active i {
+	opacity: 0;
+}
+.video-box video {
+	display: block;
+	width: 100%;
+}
+.video-box .progress-bar {
+	height: 12px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	cursor: pointer;
+	z-index: 2;
+}
+.video-box .progress-bar__holder {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 3px;
+	background: #FFF0F5;
+	transition: height .6s;
+}
+.video-box .video-box__holder .progress-bar:hover .progress-bar__holder {
+	height: 100%;
+}
+.video-box .progress-bar span {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	background: #7c0000;
+	width: 0;
+	transition: width .6s;
+}
+.video-box .toolbar {
+	overflow: hidden;
+}
+.video-box .btn-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	float: left;
+	display: flex;
+}
+.video-box .btn-list li {
+	border-left: 1px solid white;
+}
+.video-box .btn-list li:first-child {
+	border-left: none;
+}
+.video-box .volume-box {
+	float: right;
+	width: 150px;
+	display: flex;
+	flex-grow: 0;
+}
+.video-box .volume-box__holder {
+	width: 100%;
+	position: relative;
+	display: flex;
+	cursor: pointer;
+}
+.video-box .volume-box__holder:hover .volume-box__holder__center {
+	height: 6px;
+}
+.video-box .volume-box__holder__center {
+	background: #FFF0F5;
+	margin: auto 0;
+	width: 100%;
+	height: 3px;
+	position: relative;
+	transition: height .3s;
+}
+.video-box .volume-box__holder__center span {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	background: #7c0000;
+	transition: width .3s;
+	width: 100%;
+}
