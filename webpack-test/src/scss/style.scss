@@ -3,10 +3,170 @@ body {
     height: 100%;
 }
 body {
-    border: 5px solid pink;
+    display: flex;
     margin: 0;
 }
-.hello {
-    color: blue;
-    background: red;
+
+/* buttons */
+button {
+    outline: none;
+}
+.btn {
+    display: flex;
+    width: 25px;
+    min-width: 25px;
+    height: 25px;
+    border: none;
+    margin: 0;
+    padding: 0;
+    background: #ef3e42;
+    color: white;
+    transition: background .3s;
+    cursor: pointer;
+    font-size: 12px;
+    position: relative;
+    &:hover {
+        background: #ff5959;
+    }
+    i {
+        padding: 0 0 1px 0;
+        margin: auto;
+    }
+}
+.dynamic-ico {
+    .first {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    i {
+        transition: opacity .6s;
+    }
+    .first {
+        opacity: 0;
+    }
+    &.active {
+        .first {
+            opacity: 1;
+        }
+        .second {
+            opacity: 0;
+        }
+    }
+}
+
+/* video box */
+.video-box {
+    width: 400px;
+    margin: auto;
+    &__holder {
+        position: relative;
+        video {
+            position: relative;
+        }
+        .progress-bar:hover .progress-bar__holder {
+            height: 100%;
+        }
+    }
+    .holder-play {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        cursor: pointer;
+        display: flex;
+        color: white;
+        font-size: 60px;
+        line-height: 1;
+        i {
+            transition: opacity .3s;
+            margin: auto;
+            opacity: 1;
+        }
+        &.active i {
+            opacity: 0;
+        }
+    }
+    video {
+        display: block;
+        width: 100%;
+    }
+    .progress-bar {
+        height: 12px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        cursor: pointer;
+        z-index: 2;
+        &__holder {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #FFF0F5;
+            transition: height .6s;
+        }
+        span {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            background: #7c0000;
+            width: 0;
+            transition: width .6s;
+        }
+    }
+    .toolbar {
+        overflow: hidden;
+    }
+    .btn-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        float: left;
+        display: flex;
+        li {
+            border-left: 1px solid white;
+            &:first-child {
+                border-left: none;
+            }
+        }
+    }
+}
+.volume-box {
+    float: right;
+    width: 150px;
+    display: flex;
+    flex-grow: 0;
+    &__holder {
+        width: 100%;
+        position: relative;
+        display: flex;
+        cursor: pointer;
+        &__center {
+            background: #FFF0F5;
+            margin: auto 0;
+            width: 100%;
+            height: 3px;
+            position: relative;
+            transition: height .3s;
+            span {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                background: #7c0000;
+                transition: width .3s;
+                width: 100%;
+            }
+        }
+        &:hover .volume-box__holder__center {
+            height: 6px;
+        }
+    }
 }
