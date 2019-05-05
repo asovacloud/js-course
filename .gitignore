@@ -135,7 +135,6 @@ composer.json
 package-lock.json
 
 .idea/
-dist
 changed_php
 build
 composer.lock
