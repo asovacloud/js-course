@@ -11,10 +11,10 @@ body {
     font: 14px/1.2 Arial,Helvetica Neue,Helvetica,sans-serif;
 }
 
-.wrapper {
+.container {
     margin: 0 auto;
-    max-width: 800px;
-    padding: 40px;
+    padding: 0 40px;
+    max-width: 1160px;
 }
 
 .form {
@@ -131,3 +131,16 @@ body {
     }
 
 }
+
+a {
+    text-decoration: none;
+    color: #ef3e42;
+    transition: color .3s;
+
+    &:hover {
+        text-decoration: underline;
+        color: #ff5959;
+    }
+}
+
+@import 'user';
