@@ -4,22 +4,32 @@ import HomeComponent from './home.component';
 import LoginComponent from './login.component';
 import NotFoundComponent from './not-found.component';
 import SignUp from './sign-up.component';
-// import SignUpRequest from './main-request';
+import UserComponent from './user-component';
+import Routing from './routing.service';
+import ActiveRoute from './active.route.service';
 
 const routes = {
     '/': new HomeComponent(),
     '/login': new LoginComponent(),
     '/sign-up': new SignUp(),
+    '/users/:id': new UserComponent(),
     '**': new NotFoundComponent()
 };
 
+const activeRoute = new ActiveRoute();
+
 const router = () => {
     const container = document.querySelector('app-container');
-    const url = location.hash.slice(1).toLowerCase() || '/';
+    const request = activeRoute.parseRequestURL();
+    const url = (request.resourse ? '/' + request.resourse : '/') + (request.id ? '/:id' : '');
 
     const component = routes[url] || routes['**'];
-    container.innerHTML = component.render();
-    component.afterRender();
+
+    component.beforeRender().then( () => {
+        container.innerHTML = component.render();
+        component.afterRender();
+    });
+
 
 }
 

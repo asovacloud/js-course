@@ -1,9 +1,8 @@
-
-
 export default class SignUp {
     constructor() {
 
     }
+    async beforeRender() {}
     afterRender() {
         document.querySelector( '.search-box' ).addEventListener('submit', function (e) {
             e.preventDefault();
@@ -99,7 +98,7 @@ export default class SignUp {
     render() {
         return `
             <h2>Registration:</h2>
-            <form class="search-box" id="my-form">
+            <form class="search-box form" id="my-form">
                 <div id="validation-info"></div>
                 <div class="two-columns">
                     <div class="row">

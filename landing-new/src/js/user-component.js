@@ -1,8 +1,5 @@
-export default class HomeComponent {
+export default class UserComponent {
     constructor() {
-
-    }
-    async beforeRender() {
 
     }
     afterRender() {
