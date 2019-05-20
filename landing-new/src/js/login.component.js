@@ -23,11 +23,48 @@ export default class LoginComponent {
 
             let formData = {}
 
+            const checkMessageState = function() {
+
+                document.querySelector( '#my-login' ).addEventListener('click', function (e) {
+                    if(e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+                        clearMessage();
+                    }
+                });
+
+            };
+
+            checkMessageState();
+
+            const errorMessage = function(text, state) {
+                let div = document.createElement('div');
+                if(state){
+                    div.classList.add('error');
+                    div.innerHTML = text || 'Check all your fields carefully, please!!!';
+                } else {
+                    div.classList.add('valid');
+                    div.innerHTML = text || 'Success!!!';
+                }
+
+                const validationCont = document.querySelector('#validation-info');
+
+                validationCont.classList.add('active');
+
+                validationCont.innerHTML = '';
+                validationCont.appendChild( div );
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+
+                checkState = false;
+
+            };
+
+            clearMessage();
+
             formData.email = formDataArr[0].value;
             formData.password = formDataArr[1].value;
-
-            console.log( 'formData' );
-            console.log( formData );
 
             if (checkState) {
                 const formDataSend = JSON.stringify( formData );
@@ -37,6 +74,13 @@ export default class LoginComponent {
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.onload = function(e) {
                     const responseJSON = JSON.parse(this.response);
+
+                    if (responseJSON.error) {
+                        errorMessage(responseJSON.message, true);
+                    } else {
+                        errorMessage(responseJSON.message, false);
+                    }
+
                     if (!responseJSON.error) {
                         localStorage.setItem('token', responseJSON.token);
                         localStorage.setItem('id', responseJSON.id);
