@@ -15,6 +15,9 @@ export default class UserComponent {
     }
     render() {
         return `
+            <style>
+                ${ this.style }
+            </style>
             <div class="hero-box" style="background-image: url( ${ this._user.cover } )">
                 <div class="container">
                     <div class="hero-box__user"><h1>${ this._user.full_name }</h1></div>
@@ -73,4 +76,12 @@ export default class UserComponent {
             </div>
         `;
     }
+
+    style() {
+        return `
+            #my-login {
+                border: 5px solid red;
+            };
+    `}
+
 }
