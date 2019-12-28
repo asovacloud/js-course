@@ -10,23 +10,26 @@ Object.prototype.sayHello = function () {
     console.log('Hello my friend.');
 };
 
-const lena = Object.create(person)
+const lena = Object.create(person);
 
-console.log(lena);
+/*console.log(lena);
 
 console.log(lena.greet());
 
 console.log(lena.name);
 
-lena.name = 'Elena'
+lena.name = 'Elena';
 
-console.log(lena.name);
+console.log(lena.name);*/
 
 // =======================
 
 const str = new String('I am string!');
 
-
 console.log(str);
 
-str.sayHello()
+console.log(str.length);
+
+console.log(str.bold());
+
+str.sayHello();
