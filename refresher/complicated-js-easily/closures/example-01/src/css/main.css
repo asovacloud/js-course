@@ -1,0 +1,78 @@
+body {
+  font: 1rem/1.2 Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+#wrapper {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 40px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2;
+  margin: 0 0 20px;
+}
+
+h1 {
+  font-size: 2.2rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.8rem;
+}
+
+h4 {
+  font-size: 1.6rem;
+}
+
+h5 {
+  font-size: 1.4rem;
+}
+
+h6 {
+  font-size: 1.2rem;
+}
+
+.row-buttons {
+  margin: 0 -5px 80px;
+  display: flex;
+}
+
+.row-buttons__item {
+  padding: 0 5px;
+  width: 100%;
+}
+
+.row-buttons button {
+  border: 1px solid crimson;
+  background: tomato;
+  color: white;
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 4;
+  transition: background-color .3s ease-in;
+  outline: none;
+}
+
+.row-buttons button:hover {
+  background-color: crimson;
+}
+
+.row-buttons button.active {
+  background-color: #7c0000;
+  box-shadow: inset 3px 2px 2px black, inset -3px -2px 8px black;
+}
