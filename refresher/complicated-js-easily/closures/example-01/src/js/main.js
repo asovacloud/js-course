@@ -9,7 +9,7 @@ const fontSizeLarge = makeFontSize(20);
 const buttonsChangeSize = document.getElementById('buttons-change-size');
 
 const removeActiveFromButtons = () => {
-    
+
     const buttonsList = buttonsChangeSize.querySelectorAll('button.active');
 
     if(buttonsList.length > 0) {
