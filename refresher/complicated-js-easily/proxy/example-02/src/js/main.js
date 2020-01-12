@@ -1,27 +1,14 @@
-const person = {
-    name: 'Andrew',
-    age: 33,
-    job: 'Front-End'
-};
+// Functions
+const log = text => `Log: ${text}`
 
-const op = new Proxy(person, {
-    get(target, prop) {
-        console.log(`Getting prop ${prop}`);
-        return target[prop]
-    },
-    set(target, prop, value) {
-        if(prop in target) {
-            target[prop] = value
-        } else {
-            throw new Error(`No ${prop} field in target.`)
-        }
-    },
-    has(target, prop) {
-        return ['age', 'job'].includes(prop)
-    },
-    deleteProperty(target, prop) {
-        console.log('Deleting... ', prop);
-        delete target[prop];
-        return true;
+// console.log(log('Yo yo yo !!!!'));
+const fp = new Proxy(log, {
+    apply(target, thisArg, args) {
+        console.log('Calling fn...');
+        return target.apply(thisArg, args)
     }
 });
+
+// Test Functions
+console.log(fp('Yo yo yo.'));
+console.log(fp('Yo yo yo.').toUpperCase());
