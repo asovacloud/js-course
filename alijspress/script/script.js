@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const search = document.querySelector('.search');
     const cartBtn = document.getElementById('cart');
     const wishlistBtn = document.getElementById('wishlist');
+    const category = document.querySelector('.category');
 
     const goodsWrapper = document.querySelector('.goods-wrapper');
     const cart = document.querySelector('.cart');
@@ -28,32 +29,58 @@ document.addEventListener('DOMContentLoaded', () => {
         return card;
     };
 
-    goodsWrapper.append(createCardGoods(1, 'Darts', 2000, './img/temp/archer.jpg'));
-    goodsWrapper.append(createCardGoods(2, 'Flamingo', 3000, './img/temp/flamingo.jpg'));
-    goodsWrapper.append(createCardGoods(3, 'Socks', 3000, './img/temp/socks.jpg'));
-
-    const closeCart = (event) => {
+    const closeCart = event => {
         event.preventDefault();
         const target = event.target;
-        if(target === cart || target.classList.contains('cart-close') ) {
-            cart.style.display = '';
-            document.removeEventListener('keyup', closeCart);
-        }
-
-        if(event.keyCode === 27) {
+        if(target === cart ||
+            target.classList.contains('cart-close') ||
+            event.keyCode === 27 )
+        {
             cart.style.display = '';
             document.removeEventListener('keyup', closeCart);
         }
 
     };
 
-    const openCart = (event) => {
+    const openCart = event => {
         event.preventDefault();
         cart.style.display = 'flex';
         document.addEventListener('keyup', closeCart);
     };
 
+    const renderCard = items => {
+        goodsWrapper.textContent = '';
+        items.forEach(({id, title, price, imgMin}) => {
+            goodsWrapper.append(createCardGoods(id, title, price, imgMin));
+        });
+    };
+
+    const getGoods = (handler, filter) => {
+        fetch('./db/db.json')
+            .then(response => response.json())
+            .then(filter)
+            .then(handler);
+    };
+
+    const randomSort = item => item.sort(() => Math.random() - 0.5);
+
+    const chooseCategory = event => {
+        event.preventDefault();
+        const target = event.target;
+        if(target.classList.contains('category-item')) {
+            const categoryTitle = target.dataset.category;
+            getGoods(
+                renderCard,
+                goods => goods.filter(item => item.category.includes(categoryTitle) )
+            );
+        }
+
+    };
+
     cartBtn.addEventListener('click', openCart);
     cart.addEventListener('click', closeCart);
+    category.addEventListener('click', chooseCategory);
+
+    getGoods(renderCard, randomSort);
 
 });
