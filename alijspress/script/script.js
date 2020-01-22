@@ -2,7 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const search = document.querySelector('.search');
     const cartBtn = document.getElementById('cart');
     const wishlistBtn = document.getElementById('wishlist');
-    const category = document.querySelector('.category');
+    const  category = document.querySelector('.category');
+
+    const loading = () => {
+        goodsWrapper.innerHTML = `<div id="spinner"><div class="spinner-loading"><div><div><div></div>
+</div><div><div></div></div><div><div></div></div><div><div></div></div></div></div></div>`;
+    };
 
     const goodsWrapper = document.querySelector('.goods-wrapper');
     const cart = document.querySelector('.cart');
@@ -56,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const getGoods = (handler, filter) => {
+        loading();
         fetch('./db/db.json')
             .then(response => response.json())
             .then(filter)
