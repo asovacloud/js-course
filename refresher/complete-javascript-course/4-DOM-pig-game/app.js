@@ -10,7 +10,7 @@ GAME RULES:
 */
 
 // Player settings
-let scores, roundScore, activePlayer, gamePlaying;
+let scores, roundScore, activePlayer, gamePlaying, previousScore;
 
 // DOM
 const diceDOM = document.querySelector('.dice');
@@ -21,6 +21,7 @@ const init = () => {
     roundScore = 0;
     activePlayer = 0;
     gamePlaying = true;
+    previousScore = 0;
 
     diceDOM.style.display = 'none';
     document.getElementById('score-0').textContent = '0';
@@ -48,7 +49,7 @@ const nextPlayer = () => {
     document.querySelector(`.player-${activePlayer}-panel`).classList.add('active');
     diceDOM.style.display = 'none';
 
-    console.log('scores: ', scores);
+    previousScore = 0;
 };
 
 document.querySelector('.btn-roll').addEventListener('click', () => {
@@ -61,13 +62,16 @@ document.querySelector('.btn-roll').addEventListener('click', () => {
         diceDOM.style.display = 'block';
 
         // 3. Update the round score IF the rolled number was NOT a 1
-        if (dice !== 1) {
-            // Add score
-            roundScore += dice;
-            document.getElementById(`current-${activePlayer}`).textContent = roundScore
-        } else {
+        if (dice === 1 || (previousScore === 6 && dice === 6) ) {
             // Next player
             nextPlayer();
+        } else {
+            // Add score
+            roundScore += dice;
+            document.getElementById(`current-${activePlayer}`).textContent = roundScore;
+
+            previousScore = dice;
+
         }
 
     }
@@ -84,7 +88,7 @@ document.querySelector('.btn-hold').addEventListener('click', () => {
         document.getElementById(`score-${activePlayer}`).textContent = scores[activePlayer];
 
         // Check if player won the game
-        if (scores[activePlayer] >= 10) {
+        if (scores[activePlayer] >= 50) {
             document.getElementById(`name-${activePlayer}`).textContent = 'Winner!';
 
             document.querySelector(`.player-${activePlayer}-panel`).classList.remove('active');
