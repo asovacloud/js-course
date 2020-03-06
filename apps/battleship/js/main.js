@@ -6,6 +6,8 @@ const enemy = document.getElementById('enemy');
 const again = document.getElementById('again');
 const header = document.querySelector('.header');
 
+const squares = enemy.querySelectorAll('td');
+
 const game = {
   ships: [],
   shipCount: 0,
@@ -161,8 +163,26 @@ const init = () => {
   enemy.addEventListener('click', fire);
   play.render();
   game.generateShip();
-  again.addEventListener('click', () => {
-    location.reload();
+
+  again.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    play.shot = 0;
+    play.hit = 0;
+    play.dead = 0;
+
+    game.ships = [];
+    game.shipCount = 0;
+    game.collision = new Set();
+
+    squares.forEach((square,i) => {
+      squares[i].className = '';
+    });
+
+
+
+    play.render();
+    game.generateShip();
   });
 
   record.addEventListener('dblclick', () => {
