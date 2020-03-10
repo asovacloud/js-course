@@ -1,7 +1,5 @@
 const list = glo('li.list');
 
-console.log('List1: ', list);
-
 glo('li.list')
   .hide()
   .toggle()
@@ -14,3 +12,11 @@ glo('#button')
     glo('h1').toggleClass('hide');
     list.toggle();
   });
+
+list.on('click', (event) => {
+  event.target.style.cssText = `
+      background: yellow;
+      color: 'tomato';
+      font-size: 20px;
+    `
+});
