@@ -16,7 +16,7 @@ glo('#button')
 list.on('click', (event) => {
   event.target.style.cssText = `
       background: yellow;
-      color: 'tomato';
+      color: tomato;
       font-size: 20px;
     `
 });
