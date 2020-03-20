@@ -88,4 +88,21 @@ getData(citiesApi, (data) => {
         }
         return 0;
       });
+
 });
+
+//getData(PROXY + 'http://min-prices.aviasales.ru/calendar_preload?origin_iata=SVX&destination_iata=KGD&depart_date=2020-05-25&one_way_iata=true', (data) => {
+getData('./dataBase/calendar_preload.json', (data) => {
+    const calendarData = JSON.parse(data);
+
+    console.log('List of gates: ',
+    calendarData.best_prices.map(item => item.gate).sort((a, b) => {
+        if (a > b) {
+          return 1;
+        }
+        if (a < b) {
+          return -1;
+        }
+        return 0;
+      }));
+})
