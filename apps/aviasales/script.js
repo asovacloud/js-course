@@ -14,9 +14,6 @@ const citiesApi = './dataBase/cities.json',
     API_KEY = '18e3403d3786e7628f43e08adf65f92f',
     calendar = 'http://min-prices.aviasales.ru/calendar_preload';
 
-    // 25мая Екатеринбург - Калининград
-    //https://support.travelpayouts.com/hc/ru/articles/203972143-API-%D0%BA%D0%B0%D0%BB%D0%B5%D0%BD%D0%B4%D0%B0%D1%80%D1%8F-%D1%86%D0%B5%D0%BD
-
 let cityList = [];
 
 // Functions
@@ -39,7 +36,6 @@ const getData = (url, callback) => {
     request.send();
 };
 
-
 const showCity = (input, list) => {
     list.textContent = '';
     const value = input.target.value.toLowerCase();
@@ -48,7 +44,7 @@ const showCity = (input, list) => {
         const filterCity = cityList.filter((item) => {
 
             const fixItem = item.name.toLowerCase();
-            return fixItem.includes(value);
+            return fixItem.startsWith(value);
             
         } ).map(el => el.name);
     
@@ -61,21 +57,64 @@ const showCity = (input, list) => {
     }
 };
 
-const handlerCity = (event, inputCities, dropdownCities) => {
+const selectCity = (event, input, list) => {
     const target = event.target;
 
     if(target.tagName.toLowerCase() === 'li') {
-        inputCities.value = target.textContent
-        dropdownCities.textContent = '';
+        input.value = target.textContent
+        list.textContent = '';
     }
 
 };
 
+const renderCheapYear = (cheapTickets) => {
+  const arr = cheapTickets;
+  console.log('cheapTickets: ', cheapTickets);
+}
+
+const renderCheapDay = (cheapTicket) => {
+  console.log(cheapTicket);
+}
+
+const renderCheap = (data, date) => {
+  const cheapTicketYear = JSON.parse(data).best_prices;
+  const cheapTicketDay = cheapTicketYear.filter(item => item.depart_date === date)
+
+  renderCheapYear(cheapTicketYear);
+  renderCheapDay(cheapTicketDay);
+
+};
+
 // Event listener
-inputCitiesFrom.addEventListener('input', (input) => showCity(input, dropdownCitiesFrom));
-inputCitiesTo.addEventListener('input', (input) => showCity(input, dropdownCitiesTo));
-dropdownCitiesFrom.addEventListener('click', (event) => handlerCity(event, inputCitiesFrom, dropdownCitiesFrom));
-dropdownCitiesTo.addEventListener('click', (event) => handlerCity(event, inputCitiesTo, dropdownCitiesTo));
+inputCitiesFrom.addEventListener('input',
+  (input) => showCity(input, dropdownCitiesFrom)
+);
+inputCitiesTo.addEventListener('input',
+  (input) => showCity(input, dropdownCitiesTo)
+);
+dropdownCitiesFrom.addEventListener('click',
+  (event) => selectCity(event, inputCitiesFrom, dropdownCitiesFrom)
+);
+dropdownCitiesTo.addEventListener('click',
+  (event) => selectCity(event, inputCitiesTo, dropdownCitiesTo)
+);
+formSearch.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const cityFrom = cityList.find((item) => inputCitiesFrom.value === item.name);
+    const cityTo = cityList.find((item) => inputCitiesTo.value === item.name);
+
+    const fromData = {
+      from: cityFrom.code,
+      to: cityTo.code,
+      when: inputDateDepart.value
+    };
+
+    const requestData = `?depart_date=${fromData.when}&origin=${fromData.from}&destination=${fromData.to}&one_way=true`;
+
+    getData(calendar + requestData, (response) => renderCheap(response, fromData.when) );
+
+});
 
 // Call function
 getData(citiesApi, (data) => {
@@ -88,21 +127,4 @@ getData(citiesApi, (data) => {
         }
         return 0;
       });
-
 });
-
-//getData(PROXY + 'http://min-prices.aviasales.ru/calendar_preload?origin_iata=SVX&destination_iata=KGD&depart_date=2020-05-25&one_way_iata=true', (data) => {
-getData('./dataBase/calendar_preload.json', (data) => {
-    const calendarData = JSON.parse(data);
-
-    console.log('List of gates: ',
-    calendarData.best_prices.map(item => item.gate).sort((a, b) => {
-        if (a > b) {
-          return 1;
-        }
-        if (a < b) {
-          return -1;
-        }
-        return 0;
-      }));
-})
