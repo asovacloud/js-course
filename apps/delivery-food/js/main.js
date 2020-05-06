@@ -25,6 +25,8 @@ const userName = document.querySelector('.user-name');
 let loginUserName = localStorage.getItem('loginUserName');
 
 function toogleModalAuth() {
+  loginInput.style.borderColor = '';
+  loginLabel.style.color = '';
   modalAuth.classList.toggle("is-open");
 }
 
@@ -56,7 +58,7 @@ function notAutorized() {
 
   function logIn(event) {
     event.preventDefault();
-    if (loginInput.value) {
+    if (loginInput.value.trim()) {
       loginUserName = loginInput.value;
       localStorage.setItem('loginUserName', loginUserName);
       toogleModalAuth();
@@ -64,8 +66,6 @@ function notAutorized() {
       closeAuth.removeEventListener('click', toogleModalAuth);
       logInForm.removeEventListener('submit', logIn);
       logInForm.reset();
-      loginInput.style.borderColor = '';
-      loginLabel.style.color = '';
       checkAuth();
     } else {
       loginInput.style.borderColor = 'red';
