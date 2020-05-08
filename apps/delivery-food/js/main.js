@@ -20,6 +20,11 @@ const menu = document.querySelector('.menu');
 const logo = document.querySelector('.logo');
 const cardsMenu = document.querySelector('.cards-menu');
 
+const restaurantTitle = document.querySelector('.section-heading .restaurant-title');
+const restaurantRating = document.querySelector('.section-heading .rating');
+const restaurantPrice = document.querySelector('.section-heading .price');
+const restaurantCategory = document.querySelector('.section-heading .category');
+
 let loginUserName = localStorage.getItem('loginUserName');
 
 const getData = async function(url) {
@@ -101,8 +106,14 @@ const checkAuth = () => {
 const createCardRestaurants = ({ image, kitchen, name,
   price, stars, products, time_of_delivery: timeOfDelivery,
 }) => {
+  const dataRestaurant = JSON.stringify({
+    kitchen,
+    stars,
+    price,
+    name,
+  });
   const card = `
-    <a class="card card-restaurant" data-products="${ products }">
+    <a class="card card-restaurant" data-restaurant='${ dataRestaurant }' data-products="${ products }">
       <img src="${ image }" alt="image" class="card-image"/>
       <div class="card-text">
         <div class="card-heading">
@@ -124,7 +135,7 @@ const createCardRestaurants = ({ image, kitchen, name,
 
 };
 
-const createCardGood = ({ description, id, image,
+const createCardGood = ({ description, image,
   price, name, }) => {
   const card = document.createElement('div');
   card.className = 'card';
@@ -157,11 +168,19 @@ const openGoods = event => {
   const restaurant = target.closest('.card-restaurant');
 
   if (restaurant && loginUserName) {
+
     cardsMenu.textContent = '';
 
     containerPromo.classList.add('hide');
     restaurants.classList.add('hide');
     menu.classList.remove('hide');
+
+    const {kitchen, stars, price, name,} = JSON.parse(restaurant.dataset.restaurant);
+
+    restaurantTitle.textContent = name;
+    restaurantRating.textContent = stars;
+    restaurantPrice.textContent = `От ${ price } ₽`;
+    restaurantCategory.textContent = kitchen;
 
     getData(`./db/${ restaurant.dataset.products }`)
       .then(data => data.forEach(createCardGood) );
