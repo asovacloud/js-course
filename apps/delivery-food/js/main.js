@@ -19,11 +19,11 @@ const restaurants = document.querySelector('.restaurants');
 const menu = document.querySelector('.menu');
 const logo = document.querySelector('.logo');
 const cardsMenu = document.querySelector('.cards-menu');
-
 const restaurantTitle = document.querySelector('.section-heading .restaurant-title');
 const restaurantRating = document.querySelector('.section-heading .rating');
 const restaurantPrice = document.querySelector('.section-heading .price');
 const restaurantCategory = document.querySelector('.section-heading .category');
+const inputSearch = document.querySelector('.input-search');
 
 let loginUserName = localStorage.getItem('loginUserName');
 
@@ -201,8 +201,68 @@ const init = () => {
     restaurants.classList.remove('hide');
     menu.classList.add('hide');
   });
-  cartButton.addEventListener("click", toggleModal);
-  close.addEventListener("click", toggleModal);
+  cartButton.addEventListener('click', toggleModal);
+  close.addEventListener('click', toggleModal);
+  inputSearch.addEventListener('keydown', event => {
+    if (event.keyCode === 13) {
+      const target = event.target;
+
+      const value = target.value.toLowerCase().trim();
+
+      target.value = '';
+
+      if (!value || value.length < 3) {
+        target.style.backgroundColor = 'tomato';
+        setTimeout(() => {
+          target.style.backgroundColor = '';
+        }, 2000);
+        return;
+      }
+
+      const goods = [];
+
+      getData('./db/partners.json')
+        .then(data => {
+          const products = data.map(item => {
+            return item.products;
+          });
+
+          products.forEach(product => {
+            getData(`./db/${product}`)
+              .then( data => {
+                goods.push(...data);
+
+                const searchGoods = goods
+                  .filter(item => {
+                    return item.name.toLowerCase().includes(value);
+                  });
+                console.log(searchGoods);
+
+                cardsMenu.textContent = '';
+
+                containerPromo.classList.add('hide');
+                restaurants.classList.add('hide');
+                menu.classList.remove('hide');
+
+                restaurantTitle.textContent = 'Result of the search.';
+                restaurantRating.textContent = '';
+                restaurantPrice.textContent = '';
+                restaurantCategory.textContent = '';
+
+                return searchGoods
+              })
+              .then(data => {
+                if (data.length < 1) {
+                  cardsMenu.insertAdjacentHTML('beforeend', '<p>Sorry. Nothing was found on your request.</p>');
+                  return;
+                }
+                return data.forEach(createCardGood);
+              });
+          });
+
+        })
+    }
+  });
 
   checkAuth();
 }
