@@ -30,7 +30,7 @@ const buttonClearCart = document.querySelector('.clear-cart');
 
 let loginUserName = localStorage.getItem('loginUserName');
 
-const cart = [];
+const cart = JSON.parse(localStorage.getItem('foods')) || [];
 
 const getData = async function(url) {
   const response = await fetch(url);
@@ -52,7 +52,6 @@ const toogleModalAuth = () => {
 };
 
 const autorized = () => {
-  console.log('Autorized');
   function logOut() {
     loginUserName = null;
 
@@ -76,8 +75,6 @@ const autorized = () => {
 };
 
 const notAutorized = () => {
-  console.log('Not autorized');
-
   function logIn(event) {
     event.preventDefault();
     if (loginInput.value.trim()) {
@@ -249,6 +246,8 @@ const renderCart = () => {
     modalBody.insertAdjacentHTML('afterbegin', foodRow);
   });
 
+  localStorage.setItem('foods', JSON.stringify(cart));
+
   const totalPrice = cart.reduce((result, item) => {
     return result + (+/\d+/.exec(item.cost) * item.count);
   }, 0);
@@ -338,7 +337,6 @@ const init = () => {
                   .filter(item => {
                     return item.name.toLowerCase().includes(value);
                   });
-                console.log(searchGoods);
 
                 cardsMenu.textContent = '';
 
