@@ -22,17 +22,6 @@ const cardsMenu = document.querySelector('.cards-menu');
 
 let loginUserName = localStorage.getItem('loginUserName');
 
-const valid = function(str) {
-  const nameReg = /^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/;
-  return nameReg.test(str);
-}
-
-const returnMain = () => {
-  containerPromo.classList.remove('hide');
-  restaurants.classList.remove('hide');
-  menu.classList.add('hide');
-}
-
 function toggleModal() {
   modal.classList.toggle("is-open");
 }
@@ -55,7 +44,6 @@ function autorized() {
     localStorage.removeItem('loginUserName');
 
     buttonOut.removeEventListener('click', logOut);
-    returnMain();
     checkAuth();
   }
 
@@ -72,7 +60,7 @@ function notAutorized() {
 
   function logIn(event) {
     event.preventDefault();
-    if (valid(loginInput.value)) {
+    if (loginInput.value.trim()) {
       loginUserName = loginInput.value;
       localStorage.setItem('loginUserName', loginUserName);
       toogleModalAuth();
@@ -178,7 +166,11 @@ function openGoods(event) {
 }
 
 cardsRestaurants.addEventListener('click', openGoods);
-logo.addEventListener('click', returnMain);
+logo.addEventListener('click', () => {
+  containerPromo.classList.remove('hide');
+  restaurants.classList.remove('hide');
+  menu.classList.add('hide');
+});
 cartButton.addEventListener("click", toggleModal);
 close.addEventListener("click", toggleModal);
 
@@ -186,10 +178,3 @@ checkAuth();
 createCardRestaurants();
 createCardRestaurants();
 createCardRestaurants();
-
-new Swiper('.swiper-container', {
-  loop: true,
-  autoplay: {
-    delay: 5000,
-  },
-});
