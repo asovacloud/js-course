@@ -28,9 +28,20 @@ const modalBody = document.querySelector('.modal-body');
 const modalPricetag = document.querySelector('.modal-pricetag');
 const buttonClearCart = document.querySelector('.clear-cart');
 
-let loginUserName = localStorage.getItem('loginUserName');
+let loginUserName = localStorage.getItem('deliveryLogin');
 
-const cart = JSON.parse(localStorage.getItem('foods')) || [];
+const cart = [];
+
+const loadCart = () => {
+  if(localStorage.getItem(loginUserName)) {
+    JSON.parse(localStorage.getItem(loginUserName)).forEach(item => cart.push(item));
+    localStorage.getItem(loginUserName, cart);
+  }
+}
+
+const saveCart = () => {
+  localStorage.setItem(loginUserName, JSON.stringify(cart));
+}
 
 const getData = async function(url) {
   const response = await fetch(url);
@@ -53,14 +64,16 @@ const toogleModalAuth = () => {
 
 const autorized = () => {
   function logOut() {
-    loginUserName = null;
+    saveCart();
 
+    loginUserName = null;
+    cart.length = 0;
     buttonAuth.style.display = '';
     buttonOut.style.display = '';
     userName.style.display = '';
+    cartButton.style.display = '';
 
-    localStorage.removeItem('loginUserName');
-
+    localStorage.removeItem('deliveryLogin');
     buttonOut.removeEventListener('click', logOut);
     checkAuth();
   }
@@ -70,8 +83,8 @@ const autorized = () => {
   userName.style.display = 'inline';
   cartButton.style.display = 'flex';
   userName.textContent = loginUserName;
-
   buttonOut.addEventListener('click', logOut);
+  loadCart();
 };
 
 const notAutorized = () => {
@@ -79,7 +92,7 @@ const notAutorized = () => {
     event.preventDefault();
     if (loginInput.value.trim()) {
       loginUserName = loginInput.value;
-      localStorage.setItem('loginUserName', loginUserName);
+      localStorage.setItem('deliveryLogin', loginUserName);
       toogleModalAuth();
       buttonAuth.removeEventListener('click', toogleModalAuth);
       closeAuth.removeEventListener('click', toogleModalAuth);
@@ -98,13 +111,7 @@ const notAutorized = () => {
   logInForm.addEventListener('submit', logIn);
 };
 
-const checkAuth = () => {
-  if(loginUserName) {
-    autorized();
-  } else {
-    notAutorized();
-  }
-};
+const checkAuth = () => (loginUserName) ? autorized() : notAutorized();
 
 const createCardRestaurants = ({ image, kitchen, name,
   price, stars, products, time_of_delivery: timeOfDelivery,
@@ -246,13 +253,13 @@ const renderCart = () => {
     modalBody.insertAdjacentHTML('afterbegin', foodRow);
   });
 
-  localStorage.setItem('foods', JSON.stringify(cart));
-
   const totalPrice = cart.reduce((result, item) => {
     return result + (+/\d+/.exec(item.cost) * item.count);
   }, 0);
 
   modalPricetag.textContent = `${totalPrice} ₽`;
+
+  saveCart();
 };
 
 const changeCount = event => {
@@ -272,8 +279,8 @@ const changeCount = event => {
       };
     }
 
+    saveCart();
     renderCart();
-
   }
 };
 
@@ -368,3 +375,9 @@ const init = () => {
 }
 
 init();
+
+new Swiper('.swiper-container', {
+    autoplay: {
+      delay: 2000,
+    },
+});
