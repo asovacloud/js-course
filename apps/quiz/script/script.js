@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const burgerBtn = document.getElementById('burger');
   const btnPrev = document.getElementById('prev');
   const btnNext = document.getElementById('next');
+  const btnSend = document.getElementById('send');
 
   let clientWidth = document.documentElement.clientWidth;
   burgerBtn.style.display = 'none';
@@ -115,8 +116,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderQuestions = index => {
       questionTitle.textContent = questions[index].question;
-      btnPrev.style.display = (numberQuestion > 0) ? 'block' : 'none';
-      btnNext.style.display = (questions.length - 1 > numberQuestion) ? 'block' : 'none';
+      (numberQuestion > 0) ? btnPrev.classList.remove('d-none') : btnPrev.classList.add('d-none');
+      (questions.length - 1 > numberQuestion) ? btnNext.classList.remove('d-none') : btnNext.classList.add('d-none');
+      (questions.length - 1 === numberQuestion) ? btnSend.classList.remove('d-none') : btnSend.classList.add('d-none');
 
       renderAnswers(index);
     };
