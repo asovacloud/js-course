@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const questionTitle = document.getElementById('question');
   const formAnswers = document.getElementById('formAnswers');
   const burgerBtn = document.getElementById('burger');
+  const btnPrev = document.getElementById('prev');
+  const btnNext = document.getElementById('next');
 
   let clientWidth = document.documentElement.clientWidth;
   burgerBtn.style.display = 'none';
@@ -15,32 +17,122 @@ document.addEventListener('DOMContentLoaded', () => {
     burgerBtn.style.display = 'none';
   }
 
-  const data = [
-    { id: 1, title: 'Standart', image: './image/burger.png', },
-    { id: 2, title: 'Black', image: './image/burgerBlack.png', },
+  const questions = [
+    {
+      question: "Какого цвета бургер?",
+      answers: [
+          {
+              title: 'Стандарт',
+              url: './image/burger.png'
+          },
+          {
+              title: 'Черный',
+              url: './image/burgerBlack.png'
+          }
+      ],
+      type: 'radio'
+    },
+    {
+      question: "Из какого мяса котлета?",
+      answers: [
+          {
+              title: 'Курица',
+              url: './image/chickenMeat.png'
+          },
+          {
+              title: 'Говядина',
+              url: './image/beefMeat.png'
+          },
+          {
+              title: 'Свинина',
+              url: './image/porkMeat.png'
+          }
+      ],
+      type: 'radio'
+    },
+    {
+      question: "Дополнительные ингредиенты?",
+      answers: [
+          {
+              title: 'Помидор',
+              url: './image/tomato.png'
+          },
+          {
+              title: 'Огурец',
+              url: './image/cucumber.png'
+          },
+          {
+              title: 'Салат',
+              url: './image/salad.png'
+          },
+          {
+              title: 'Лук',
+              url: './image/onion.png'
+          }
+      ],
+      type: 'checkbox'
+    },
+    {
+      question: "Добавить соус?",
+      answers: [
+          {
+              title: 'Чесночный',
+              url: './image/sauce1.png'
+          },
+          {
+              title: 'Томатный',
+              url: './image/sauce2.png'
+          },
+          {
+              title: 'Горчичный',
+              url: './image/sauce3.png'
+          }
+      ],
+      type: 'radio'
+    }
   ];
 
   const playTest = () => {
-    const renderQuestions = () => {
-      questionTitle.textContent = 'Choose a color of the burger, please.';
+
+    let numberQuestion = 0;
+
+    const renderAnswers = index => {
       formAnswers.textContent = '';
-      data.forEach((item, idx) => {
+      questions[index].answers.forEach((answer) => {
         const div = document.createElement('div');
-        div.classList.add('answers-item');
-        div.classList.add('d-flex');
-        (idx === 0) ? div.classList.add('flex-column') : div.classList.add('justify-content-center');
+        div.classList.add('answers-item', 'd-flex', 'flex-column');
         const cardAnswer = `
-          <input type="radio" id="answerItem1" name="answer" class="d-none">
-          <label for="answerItem1" class="d-flex flex-column justify-content-between">
-            <img class="answerImg" src=${ item.image } alt="burger">
-            <span>${ item.title }</span>
+          <input type="${ questions[index].type }" id="${ answer.title }" name="${ questions[index].question }" class="d-none">
+          <label for="${ answer.title }" class="d-flex flex-column justify-content-between">
+            <img class="answerImg" src=${ answer.url } alt="burger">
+            <span>${ answer.title }</span>
           </label>
         `;
         div.innerHTML = cardAnswer;
-        formAnswers.insertAdjacentElement('afterbegin', div);
+        formAnswers.insertAdjacentElement('beforeend', div);
       });
+    }
+
+    const renderQuestions = index => {
+      questionTitle.textContent = questions[index].question;
+      btnPrev.style.display = (numberQuestion > 0) ? 'block' : 'none';
+      btnNext.style.display = (questions.length - 1 > numberQuestion) ? 'block' : 'none';
+
+      renderAnswers(index);
     };
-    renderQuestions();
+
+    renderQuestions(numberQuestion);
+
+    btnPrev.onclick = () => {
+      numberQuestion--;
+      renderQuestions(numberQuestion);
+    };
+
+    btnNext.onclick = () => {
+      numberQuestion++
+      renderQuestions(numberQuestion);
+    };
+
   };
 
   const closeModalClickOnMask = event => {
