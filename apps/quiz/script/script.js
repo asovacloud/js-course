@@ -1,4 +1,6 @@
+// global listener
 document.addEventListener('DOMContentLoaded', () => {
+
   // variables
   const btnOpenModal = document.getElementById('btnOpenModal');
   const modalBlock = document.getElementById('modalBlock');
@@ -98,12 +100,131 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   // functions
-
   let count = -100;
   let interval;
   modalDialog.style.top = count + '%';
 
+  // start test
+  const playTest = () => {
 
+    // variable with the number of the question
+    let numberQuestion = 0;
+
+    const finalAnswers = [];
+
+    // render answers
+    const renderAnswers = index => {
+      formAnswers.textContent = '';
+      questions[index].answers.forEach((answer) => {
+        const div = document.createElement('div');
+        div.classList.add('answers-item', 'd-flex', 'justify-content-center');
+        const cardAnswer = `
+          <input
+            type="${ questions[index].type }"
+            id="${ answer.title }"
+            name="${ questions[index].question }"
+            class="d-none"
+            value="${ answer.title }"
+          />
+          <label for="${ answer.title }" class="d-flex flex-column justify-content-between">
+            <img class="answerImg" src=${ answer.url } alt="burger">
+            <span>${ answer.title }</span>
+          </label>
+        `;
+        div.innerHTML = cardAnswer;
+        formAnswers.insertAdjacentElement('beforeend', div);
+      });
+    }
+
+    // render questions
+    const renderQuestions = index => {
+
+      switch (true) {
+        case (numberQuestion >= 0 && numberQuestion <= questions.length - 1):
+          questionTitle.textContent = questions[index].question;
+          renderAnswers(index);
+
+          btnPrev.classList.remove('d-none');
+          btnNext.classList.remove('d-none');
+          btnSend.classList.add('d-none');
+          break;
+        case (numberQuestion === questions.length):
+          btnNext.classList.add('d-none');
+          btnPrev.classList.add('d-none');
+          btnSend.classList.remove('d-none');
+          formAnswers.innerHTML = `
+            <div class="form-group">
+              <label for="numberPhone">Enter phone, please:</label>
+              <input type="tel" class="form-control" id="numberPhone" placeholder="Enter phone"  pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
+            </div>
+          `;
+          break;
+        case (numberQuestion === questions.length + 1):
+          btnSend.classList.add('d-none');
+          formAnswers.textContent = `
+            Your order was received.
+            Our manager will call you.
+            Thank you.
+          `;
+          setTimeout(() => {
+            closeModal();
+          }, 5000);
+          break;
+      }
+
+      switch (true) {
+        case (numberQuestion === 0):
+          btnPrev.classList.add('d-none');
+      }
+      
+    };
+
+    renderQuestions(numberQuestion);
+
+    const checkAnswer = () => {
+      const obj = {};
+
+      const inputs = [ ...formAnswers.elements ].filter(input => {
+        return input.checked || input.id === 'numberPhone'
+      });
+
+      inputs.forEach((input, index) => {
+        if (numberQuestion >= 0 && numberQuestion <= questions.length - 1) {
+          obj[`${index}_${questions[numberQuestion].question}`] = input.value;
+        }
+
+        if (numberQuestion === questions.length) {
+          obj['Phone number'] = input.value;
+        }
+
+      })
+
+      finalAnswers.push(obj);
+
+    };
+
+    // listeners for the prev/next buttons
+    btnPrev.onclick = () => {
+      numberQuestion--;
+      renderQuestions(numberQuestion);
+    };
+
+    btnNext.onclick = () => {
+      checkAnswer();
+      numberQuestion++
+      renderQuestions(numberQuestion);
+    };
+
+    btnSend.onclick = () => {
+      checkAnswer();
+      numberQuestion++;
+      renderQuestions(numberQuestion);
+      console.log(finalAnswers);
+    };
+
+  };
+
+  // functions for the modal open/close
   const animateModal = () => {
     modalDialog.style.top = count + '%';
     count += 3;
@@ -115,50 +236,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
   }
-
-  const playTest = () => {
-
-    let numberQuestion = 0;
-
-    const renderAnswers = index => {
-      formAnswers.textContent = '';
-      questions[index].answers.forEach((answer) => {
-        const div = document.createElement('div');
-        div.classList.add('answers-item', 'd-flex', 'justify-content-center');
-        const cardAnswer = `
-          <input type="${ questions[index].type }" id="${ answer.title }" name="${ questions[index].question }" class="d-none">
-          <label for="${ answer.title }" class="d-flex flex-column justify-content-between">
-            <img class="answerImg" src=${ answer.url } alt="burger">
-            <span>${ answer.title }</span>
-          </label>
-        `;
-        div.innerHTML = cardAnswer;
-        formAnswers.insertAdjacentElement('beforeend', div);
-      });
-    }
-
-    const renderQuestions = index => {
-      questionTitle.textContent = questions[index].question;
-      (numberQuestion > 0) ? btnPrev.classList.remove('d-none') : btnPrev.classList.add('d-none');
-      (questions.length - 1 > numberQuestion) ? btnNext.classList.remove('d-none') : btnNext.classList.add('d-none');
-      (questions.length - 1 === numberQuestion) ? btnSend.classList.remove('d-none') : btnSend.classList.add('d-none');
-
-      renderAnswers(index);
-    };
-
-    renderQuestions(numberQuestion);
-
-    btnPrev.onclick = () => {
-      numberQuestion--;
-      renderQuestions(numberQuestion);
-    };
-
-    btnNext.onclick = () => {
-      numberQuestion++
-      renderQuestions(numberQuestion);
-    };
-
-  };
 
   const closeModalClickOnMask = event => {
     if (event.target.id === 'modalBlock') closeModal();
@@ -184,17 +261,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // initialization
   const init = () => {
 
-    // listeners
+    // check size of the window
     window.addEventListener('resize', () => {
       clientWidth = document.documentElement.clientWidth;
-      console.log("clientWidth", clientWidth)
-      if(clientWidth < 768) {
+      if (clientWidth < 768) {
         burgerBtn.style.display = 'flex';
       } else {
         burgerBtn.style.display = 'none';
       }
     });
 
+    // listeners fo the buttons
     burgerBtn.addEventListener('click', () => {
       burgerBtn.classList.add('active');
 
