@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // variables
   const btnOpenModal = document.getElementById('btnOpenModal');
   const modalBlock = document.getElementById('modalBlock');
   const btnCloseModal = document.getElementById('closeModal');
@@ -8,16 +9,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnPrev = document.getElementById('prev');
   const btnNext = document.getElementById('next');
   const btnSend = document.getElementById('send');
+  const modalDialog = document.querySelector('.modal-dialog');
 
   let clientWidth = document.documentElement.clientWidth;
   burgerBtn.style.display = 'none';
 
+  // show/hide burger
   if(clientWidth < 768) {
     burgerBtn.style.display = 'flex';
   } else {
     burgerBtn.style.display = 'none';
   }
 
+  // data
   const questions = [
     {
       question: "Какого цвета бургер?",
@@ -93,6 +97,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
+  // functions
+
+  let count = -100;
+  let interval;
+  modalDialog.style.top = count + '%';
+
+
+  const animateModal = () => {
+    modalDialog.style.top = count + '%';
+    count += 3;
+
+    if (count < 0) {
+      requestAnimationFrame(animateModal);
+    } else {
+      count = -100;
+    }
+
+  }
+
   const playTest = () => {
 
     let numberQuestion = 0;
@@ -101,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
       formAnswers.textContent = '';
       questions[index].answers.forEach((answer) => {
         const div = document.createElement('div');
-        div.classList.add('answers-item', 'd-flex', 'flex-column');
+        div.classList.add('answers-item', 'd-flex', 'justify-content-center');
         const cardAnswer = `
           <input type="${ questions[index].type }" id="${ answer.title }" name="${ questions[index].question }" class="d-none">
           <label for="${ answer.title }" class="d-flex flex-column justify-content-between">
@@ -142,6 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const openModal = () => {
+    // animateModal();
+    requestAnimationFrame(animateModal);
     modalBlock.classList.add('d-block');
     playTest();
 
@@ -156,24 +181,32 @@ document.addEventListener('DOMContentLoaded', () => {
     window.removeEventListener('click', closeModalClickOnMask);
   };
 
-  window.addEventListener('resize', () => {
-    clientWidth = document.documentElement.clientWidth;
-    console.log("clientWidth", clientWidth)
-    if(clientWidth < 768) {
-      burgerBtn.style.display = 'flex';
-    } else {
-      burgerBtn.style.display = 'none';
-    }
-  });
+  // initialization
+  const init = () => {
 
-  burgerBtn.addEventListener('click', () => {
-    burgerBtn.classList.add('active');
+    // listeners
+    window.addEventListener('resize', () => {
+      clientWidth = document.documentElement.clientWidth;
+      console.log("clientWidth", clientWidth)
+      if(clientWidth < 768) {
+        burgerBtn.style.display = 'flex';
+      } else {
+        burgerBtn.style.display = 'none';
+      }
+    });
 
-    openModal();
-  });
+    burgerBtn.addEventListener('click', () => {
+      burgerBtn.classList.add('active');
 
-  btnOpenModal.addEventListener('click', openModal);
+      openModal();
+    });
 
-  btnCloseModal.addEventListener('click', closeModal);
+    btnOpenModal.addEventListener('click', openModal);
+
+    btnCloseModal.addEventListener('click', closeModal);
+  };
+
+  init();
+  
 
 })
