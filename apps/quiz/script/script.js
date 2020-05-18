@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnNext = document.getElementById('next');
   const btnSend = document.getElementById('send');
   const modalDialog = document.querySelector('.modal-dialog');
+  const modalTitle = document.querySelector('.modal-title');
 
   let clientWidth = document.documentElement.clientWidth;
   burgerBtn.style.display = 'none';
@@ -109,8 +110,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // variable with the number of the question
     let numberQuestion = 0;
+    modalTitle.textContent = 'Ответить на вопрос';
 
     const finalAnswers = [];
+    const obj = {};
 
     // render answers
     const renderAnswers = index => {
@@ -152,12 +155,20 @@ document.addEventListener('DOMContentLoaded', () => {
           btnNext.classList.add('d-none');
           btnPrev.classList.add('d-none');
           btnSend.classList.remove('d-none');
+
+          // render content for the item
+          modalTitle.textContent = '';
+          questionTitle.textContent = '';
           formAnswers.innerHTML = `
             <div class="form-group">
               <label for="numberPhone">Enter phone, please:</label>
               <input type="tel" class="form-control" id="numberPhone" placeholder="Enter phone"  pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
             </div>
           `;
+          const numberPhone = document.getElementById('numberPhone');
+          numberPhone.addEventListener('input', event => {
+            event.target.value = event.target.value.replace(/[^0-9+-]/, '');
+          })
           break;
         case (numberQuestion === questions.length + 1):
           btnSend.classList.add('d-none');
@@ -166,10 +177,22 @@ document.addEventListener('DOMContentLoaded', () => {
             Our manager will call you.
             Thank you.
           `;
+
+          for (let key in obj) {
+            let newObj = {};
+            newObj[key] = obj[key];
+            finalAnswers.push(newObj);
+          }
+
           setTimeout(() => {
             closeModal();
           }, 5000);
           break;
+      }
+
+      switch (true) {
+        case (numberQuestion === 0):
+          btnPrev.classList.add('d-none');
       }
 
       switch (true) {
@@ -182,7 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderQuestions(numberQuestion);
 
     const checkAnswer = () => {
-      const obj = {};
 
       const inputs = [ ...formAnswers.elements ].filter(input => {
         return input.checked || input.id === 'numberPhone'
@@ -197,9 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
           obj['Phone number'] = input.value;
         }
 
-      })
-
-      finalAnswers.push(obj);
+      });
 
     };
 
@@ -219,7 +239,6 @@ document.addEventListener('DOMContentLoaded', () => {
       checkAnswer();
       numberQuestion++;
       renderQuestions(numberQuestion);
-      console.log(finalAnswers);
     };
 
   };
